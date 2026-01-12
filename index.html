@@ -23,17 +23,30 @@
     box-shadow: 0 25px 50px rgba(0,0,0,0.35);
   }
 
+  /* TITLE TEXT */
+  .jukebox-title {
+    position: absolute;
+    top: 12px;
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+    color: white;
+    font-size: 18px;
+    text-shadow: 0 0 10px rgba(255,255,255,0.9);
+    letter-spacing: 1px;
+  }
+
   /* GLASS WINDOW */
   .arch {
     width: 220px;
     height: 220px;
-    margin: 30px auto 0;
+    margin: 50px auto 0;
     background: rgba(255,255,255,0.25);
     border-radius: 120px 120px 20px 20px;
     box-shadow: inset 0 0 20px rgba(255,255,255,0.6);
   }
 
-  /* COIN SLOT FRAME (MATCHING IMAGE) */
+  /* COIN SLOT FRAME */
   .slot-frame {
     position: absolute;
     bottom: 55px;
@@ -49,7 +62,6 @@
       0 8px 18px rgba(0,0,0,0.35);
   }
 
-  /* BLACK SLOT */
   .slot {
     position: absolute;
     left: 18px;
@@ -58,10 +70,8 @@
     height: 90px;
     background: linear-gradient(#000, #222);
     border-radius: 6px;
-    box-shadow: inset 0 0 6px rgba(255,255,255,0.15);
   }
 
-  /* SLOT TEXT */
   .slot-text {
     position: absolute;
     right: 12px;
@@ -70,28 +80,32 @@
     font-size: 13px;
     font-weight: bold;
     color: #fff;
-    text-shadow: 0 0 6px rgba(255,255,255,0.8);
   }
 
   .slot-text span {
     display: block;
     font-size: 34px;
-    margin-bottom: 5px;
   }
 
-  /* COIN */
+  /* CUTER + EASIER COIN */
   .coin {
     position: absolute;
     bottom: 25px;
     left: 20px;
-    width: 48px;
-    height: 48px;
-    background: radial-gradient(circle at top, #fff2a8, #d4a100);
+    width: 60px;
+    height: 60px;
+    background: radial-gradient(circle at top, #fff6c5, #e6b200);
     border-radius: 50%;
     box-shadow:
-      inset 0 0 8px rgba(255,255,255,0.9),
-      0 6px 12px rgba(0,0,0,0.4);
+      inset 0 0 10px rgba(255,255,255,1),
+      0 6px 14px rgba(0,0,0,0.4);
     cursor: grab;
+    transition: transform 0.15s;
+  }
+
+  .coin:active {
+    cursor: grabbing;
+    transform: scale(1.1);
   }
 
   /* PLAYLIST PANEL */
@@ -136,13 +150,14 @@
     cursor: pointer;
   }
 
-  /* HEART RECORD */
+  /* HEART RECORD PLAYER */
   .record {
     position: fixed;
     bottom: 15px;
     right: 15px;
-    font-size: 70px;
-    animation: spin 4s linear infinite;
+    font-size: 72px;
+    animation: spin 3.5s linear infinite;
+    filter: drop-shadow(0 0 8px rgba(255,105,180,0.7));
   }
 
   @keyframes spin {
@@ -154,13 +169,14 @@
 <body>
 
 <div class="jukebox">
+  <div class="jukebox-title">Songs That Remind Me of You 💕</div>
   <div class="arch"></div>
 
   <div class="slot-frame" id="slotFrame">
-    <div class="slot" id="slot"></div>
+    <div class="slot"></div>
     <div class="slot-text">
       <span>25¢</span>
-      INSERT<br>COIN<br>TO PLAY
+      INSERT<br>COIN
     </div>
   </div>
 
@@ -168,7 +184,7 @@
 </div>
 
 <div class="playlist" id="playlist">
-  <h2>Our Playlist 💕</h2>
+  <h2>Our Playlist 💖</h2>
 
   <div class="song" onclick="playSong(0)">Daddy’s Home — Usher</div>
   <div class="song" onclick="playSong(1)">Say It — Tory Lanez</div>
@@ -191,7 +207,7 @@
 
 <script>
   const coin = document.getElementById("coin");
-  const slot = document.getElementById("slotFrame");
+  const slotFrame = document.getElementById("slotFrame");
   const playlist = document.getElementById("playlist");
   const player = document.getElementById("player");
 
@@ -209,14 +225,18 @@
   document.addEventListener("mousemove", e => {
     if (!dragging) return;
 
-    coin.style.left = e.pageX - 24 + "px";
-    coin.style.top = e.pageY - 24 + "px";
+    coin.style.left = e.pageX - 30 + "px";
+    coin.style.top = e.pageY - 30 + "px";
 
     const c = coin.getBoundingClientRect();
-    const s = slot.getBoundingClientRect();
+    const s = slotFrame.getBoundingClientRect();
 
-    if (c.left < s.right && c.right > s.left &&
-        c.top < s.bottom && c.bottom > s.top) {
+    /* VERY FORGIVING SNAP ZONE */
+    const closeEnough =
+      Math.abs(c.left - s.left) < 80 &&
+      Math.abs(c.top - s.top) < 80;
+
+    if (closeEnough) {
       playlist.classList.add("open");
       coin.style.display = "none";
       dragging = false;
