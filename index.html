@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Love Jukebox 💕</title>
+
+<style>
+  body {
+    margin: 0;
+    background: #fde6f4;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+  }
+
+  /* JUKEBOX BODY */
+  .jukebox {
+    width: 320px;
+    height: 460px;
+    background: linear-gradient(180deg, #ff9acb, #ff5fa2);
+    border-radius: 30px;
+    margin: 40px auto;
+    position: relative;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.35);
+  }
+
+  /* GLASS WINDOW */
+  .arch {
+    width: 220px;
+    height: 220px;
+    margin: 30px auto 0;
+    background: rgba(255,255,255,0.25);
+    border-radius: 120px 120px 20px 20px;
+    box-shadow: inset 0 0 20px rgba(255,255,255,0.6);
+  }
+
+  /* COIN SLOT FRAME (MATCHING IMAGE) */
+  .slot-frame {
+    position: absolute;
+    bottom: 55px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 130px;
+    height: 130px;
+    background: linear-gradient(145deg, #ffb3d9, #ff6fb1);
+    border-radius: 18px;
+    box-shadow:
+      inset 0 0 8px rgba(255,255,255,0.9),
+      inset 0 -6px 10px rgba(0,0,0,0.2),
+      0 8px 18px rgba(0,0,0,0.35);
+  }
+
+  /* BLACK SLOT */
+  .slot {
+    position: absolute;
+    left: 18px;
+    top: 20px;
+    width: 22px;
+    height: 90px;
+    background: linear-gradient(#000, #222);
+    border-radius: 6px;
+    box-shadow: inset 0 0 6px rgba(255,255,255,0.15);
+  }
+
+  /* SLOT TEXT */
+  .slot-text {
+    position: absolute;
+    right: 12px;
+    top: 28px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 0 0 6px rgba(255,255,255,0.8);
+  }
+
+  .slot-text span {
+    display: block;
+    font-size: 34px;
+    margin-bottom: 5px;
+  }
+
+  /* COIN */
+  .coin {
+    position: absolute;
+    bottom: 25px;
+    left: 20px;
+    width: 48px;
+    height: 48px;
+    background: radial-gradient(circle at top, #fff2a8, #d4a100);
+    border-radius: 50%;
+    box-shadow:
+      inset 0 0 8px rgba(255,255,255,0.9),
+      0 6px 12px rgba(0,0,0,0.4);
+    cursor: grab;
+  }
+
+  /* PLAYLIST PANEL */
+  .playlist {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 360px;
+    height: 100%;
+    background: #121212;
+    color: white;
+    padding: 20px;
+    transition: right 0.6s ease;
+  }
+
+  .playlist.open {
+    right: 0;
+  }
+
+  .playlist h2 {
+    color: #1db954;
+  }
+
+  .song {
+    padding: 10px;
+    border-bottom: 1px solid #333;
+    cursor: pointer;
+  }
+
+  .song:hover {
+    background: #282828;
+  }
+
+  .shuffle {
+    margin-top: 15px;
+    padding: 10px;
+    background: #1db954;
+    border: none;
+    border-radius: 20px;
+    width: 100%;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  /* HEART RECORD */
+  .record {
+    position: fixed;
+    bottom: 15px;
+    right: 15px;
+    font-size: 70px;
+    animation: spin 4s linear infinite;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+</style>
+</head>
+
+<body>
+
+<div class="jukebox">
+  <div class="arch"></div>
+
+  <div class="slot-frame" id="slotFrame">
+    <div class="slot" id="slot"></div>
+    <div class="slot-text">
+      <span>25¢</span>
+      INSERT<br>COIN<br>TO PLAY
+    </div>
+  </div>
+
+  <div class="coin" id="coin"></div>
+</div>
+
+<div class="playlist" id="playlist">
+  <h2>Our Playlist 💕</h2>
+
+  <div class="song" onclick="playSong(0)">Daddy’s Home — Usher</div>
+  <div class="song" onclick="playSong(1)">Say It — Tory Lanez</div>
+  <div class="song" onclick="playSong(2)">Call Me Maybe — Carly Rae Jepsen</div>
+  <div class="song" onclick="playSong(3)">I Want It That Way — Backstreet Boys</div>
+  <div class="song" onclick="playSong(4)">One Thing — One Direction</div>
+  <div class="song" onclick="playSong(5)">Perfect — One Direction</div>
+  <div class="song" onclick="playSong(6)">Miami — Morgan Wallen</div>
+  <div class="song" onclick="playSong(7)">Jolene — Dolly Parton</div>
+  <div class="song" onclick="playSong(8)">Super Bass — Nicki Minaj</div>
+  <div class="song" onclick="playSong(9)">Can’t Remember to Forget You — Shakira</div>
+  <div class="song" onclick="playSong(10)">Dagabaaz Re — Rahat Fateh Ali Khan</div>
+
+  <button class="shuffle" onclick="shufflePlay()">🔀 Shuffle</button>
+</div>
+
+<div class="record">💖</div>
+
+<audio id="player"></audio>
+
+<script>
+  const coin = document.getElementById("coin");
+  const slot = document.getElementById("slotFrame");
+  const playlist = document.getElementById("playlist");
+  const player = document.getElementById("player");
+
+  const songs = [
+    "daddyshome.mp3","sayit.mp3","callmemaybe.mp3",
+    "iwantitthatway.mp3","onething.mp3","perfect.mp3","miami.mp3",
+    "jolene.mp3","superbass.mp3","cantremembertoforgetyou.mp3","dagabaazre.mp3"
+  ];
+
+  let dragging = false;
+
+  coin.addEventListener("mousedown", () => dragging = true);
+  document.addEventListener("mouseup", () => dragging = false);
+
+  document.addEventListener("mousemove", e => {
+    if (!dragging) return;
+
+    coin.style.left = e.pageX - 24 + "px";
+    coin.style.top = e.pageY - 24 + "px";
+
+    const c = coin.getBoundingClientRect();
+    const s = slot.getBoundingClientRect();
+
+    if (c.left < s.right && c.right > s.left &&
+        c.top < s.bottom && c.bottom > s.top) {
+      playlist.classList.add("open");
+      coin.style.display = "none";
+      dragging = false;
+    }
+  });
+
+  function playSong(i) {
+    player.src = songs[i];
+    player.play();
+  }
+
+  function shufflePlay() {
+    playSong(Math.floor(Math.random() * songs.length));
+  }
+</script>
+
+</body>
+</html>
