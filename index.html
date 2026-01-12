@@ -5,172 +5,214 @@
 <title>Love Jukebox 💕</title>
 
 <style>
-  body {
-    margin: 0;
-    background: #fde6f4;
-    font-family: Arial, sans-serif;
-    overflow: hidden;
-  }
+body {
+  margin: 0;
+  background: #fde6f4;
+  font-family: Arial, sans-serif;
+  overflow: hidden;
+}
 
-  /* JUKEBOX BODY */
-  .jukebox {
-    width: 320px;
-    height: 460px;
-    background: linear-gradient(180deg, #ff9acb, #ff5fa2);
-    border-radius: 30px;
-    margin: 40px auto;
-    position: relative;
-    box-shadow: 0 25px 50px rgba(0,0,0,0.35);
-  }
+/* JUKEBOX BODY */
+.jukebox {
+  width: 320px;
+  height: 460px;
+  background: linear-gradient(180deg, #ff9acb, #ff5fa2);
+  border-radius: 30px;
+  margin: 40px auto;
+  position: relative;
+  box-shadow: 0 25px 50px rgba(0,0,0,0.35);
+  transition: box-shadow 0.6s ease;
+}
 
-  /* TITLE TEXT */
-  .jukebox-title {
-    position: absolute;
-    top: 12px;
-    width: 100%;
-    text-align: center;
-    font-weight: bold;
-    color: white;
-    font-size: 18px;
-    text-shadow: 0 0 10px rgba(255,255,255,0.9);
-    letter-spacing: 1px;
-  }
+.jukebox.glow {
+  box-shadow:
+    0 0 35px rgba(255,120,190,0.9),
+    0 25px 50px rgba(0,0,0,0.35);
+}
 
-  /* GLASS WINDOW */
-  .arch {
-    width: 220px;
-    height: 220px;
-    margin: 50px auto 0;
-    background: rgba(255,255,255,0.25);
-    border-radius: 120px 120px 20px 20px;
-    box-shadow: inset 0 0 20px rgba(255,255,255,0.6);
-  }
+/* GLASS WINDOW */
+.arch {
+  width: 220px;
+  height: 220px;
+  margin: 40px auto 0;
+  background: rgba(255,255,255,0.28);
+  border-radius: 120px 120px 20px 20px;
+  box-shadow: inset 0 0 25px rgba(255,255,255,0.7);
+  position: relative;
+}
 
-  /* COIN SLOT FRAME */
-  .slot-frame {
-    position: absolute;
-    bottom: 55px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 130px;
-    height: 130px;
-    background: linear-gradient(145deg, #ffb3d9, #ff6fb1);
-    border-radius: 18px;
-    box-shadow:
-      inset 0 0 8px rgba(255,255,255,0.9),
-      inset 0 -6px 10px rgba(0,0,0,0.2),
-      0 8px 18px rgba(0,0,0,0.35);
-  }
+.arch-title {
+  position: absolute;
+  bottom: 28px;
+  width: 100%;
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  letter-spacing: 0.8px;
+  text-shadow: 0 0 10px rgba(255,255,255,0.9);
+}
 
-  .slot {
-    position: absolute;
-    left: 18px;
-    top: 20px;
-    width: 22px;
-    height: 90px;
-    background: linear-gradient(#000, #222);
-    border-radius: 6px;
-  }
+/* COIN SLOT */
+.slot-frame {
+  position: absolute;
+  bottom: 55px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 130px;
+  height: 130px;
+  background: linear-gradient(145deg, #ffb3d9, #ff6fb1);
+  border-radius: 18px;
+  box-shadow:
+    inset 0 0 8px rgba(255,255,255,0.9),
+    inset 0 -6px 10px rgba(0,0,0,0.2),
+    0 8px 18px rgba(0,0,0,0.35);
+}
 
-  .slot-text {
-    position: absolute;
-    right: 12px;
-    top: 28px;
-    text-align: center;
-    font-size: 13px;
-    font-weight: bold;
-    color: #fff;
-  }
+.slot {
+  position: absolute;
+  left: 18px;
+  top: 20px;
+  width: 22px;
+  height: 90px;
+  background: linear-gradient(#000, #222);
+  border-radius: 6px;
+}
 
-  .slot-text span {
-    display: block;
-    font-size: 34px;
-  }
+.slot-text {
+  position: absolute;
+  right: 12px;
+  top: 28px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 0 0 6px rgba(255,255,255,0.8);
+}
 
-  /* CUTER + EASIER COIN */
-  .coin {
-    position: absolute;
-    bottom: 25px;
-    left: 20px;
-    width: 60px;
-    height: 60px;
-    background: radial-gradient(circle at top, #fff6c5, #e6b200);
-    border-radius: 50%;
-    box-shadow:
-      inset 0 0 10px rgba(255,255,255,1),
-      0 6px 14px rgba(0,0,0,0.4);
-    cursor: grab;
-    transition: transform 0.15s;
-  }
+.slot-text span {
+  display: block;
+  font-size: 34px;
+  margin-bottom: 5px;
+}
 
-  .coin:active {
-    cursor: grabbing;
-    transform: scale(1.1);
-  }
+/* COIN */
+.coin {
+  position: absolute;
+  bottom: 25px;
+  left: 20px;
+  width: 52px;
+  height: 52px;
+  background: radial-gradient(circle at top, #fff2a8, #d4a100);
+  border-radius: 50%;
+  box-shadow:
+    inset 0 0 8px rgba(255,255,255,0.9),
+    0 6px 12px rgba(0,0,0,0.4);
+  cursor: grab;
+}
 
-  /* PLAYLIST PANEL */
-  .playlist {
-    position: fixed;
-    top: 0;
-    right: -100%;
-    width: 360px;
-    height: 100%;
-    background: #121212;
-    color: white;
-    padding: 20px;
-    transition: right 0.6s ease;
-  }
+/* PLAYLIST */
+.playlist {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 360px;
+  height: 100%;
+  background: #121212;
+  color: white;
+  padding: 20px;
+  transition: right 0.6s ease;
+}
 
-  .playlist.open {
-    right: 0;
-  }
+.playlist.open { right: 0; }
 
-  .playlist h2 {
-    color: #1db954;
-  }
+.playlist h2 { color: #1db954; }
 
-  .song {
-    padding: 10px;
-    border-bottom: 1px solid #333;
-    cursor: pointer;
-  }
+.song {
+  padding: 10px;
+  border-bottom: 1px solid #333;
+  cursor: pointer;
+}
+.song:hover { background: #282828; }
 
-  .song:hover {
-    background: #282828;
-  }
+.shuffle {
+  margin-top: 15px;
+  padding: 10px;
+  background: #1db954;
+  border: none;
+  border-radius: 20px;
+  width: 100%;
+  font-weight: bold;
+  cursor: pointer;
+}
 
-  .shuffle {
-    margin-top: 15px;
-    padding: 10px;
-    background: #1db954;
-    border: none;
-    border-radius: 20px;
-    width: 100%;
-    font-weight: bold;
-    cursor: pointer;
-  }
+/* RECORD PLAYER */
+.record-player {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 110px;
+  height: 110px;
+}
 
-  /* HEART RECORD PLAYER */
-  .record {
-    position: fixed;
-    bottom: 15px;
-    right: 15px;
-    font-size: 72px;
-    animation: spin 3.5s linear infinite;
-    filter: drop-shadow(0 0 8px rgba(255,105,180,0.7));
-  }
+.vinyl {
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, #111 55%, #000 60%);
+  border-radius: 50%;
+  animation: spin 3s linear infinite;
+  position: relative;
+}
 
-  @keyframes spin {
-    to { transform: rotate(360deg); }
-  }
+.vinyl::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.1);
+}
+
+.label {
+  position: absolute;
+  inset: 32%;
+  background: pink;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+/* NEEDLE ARM */
+.needle {
+  position: absolute;
+  width: 80px;
+  height: 6px;
+  background: #444;
+  top: -10px;
+  right: -40px;
+  transform-origin: left center;
+  transform: rotate(-25deg);
+  transition: transform 0.6s ease;
+  border-radius: 4px;
+}
+
+.playing .needle {
+  transform: rotate(0deg);
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
 </style>
 </head>
 
 <body>
 
-<div class="jukebox">
-  <div class="jukebox-title">Songs That Remind Me of You 💕</div>
-  <div class="arch"></div>
+<div class="jukebox" id="jukebox">
+  <div class="arch">
+    <div class="arch-title">Songs That Remind Me of You 💕</div>
+  </div>
 
   <div class="slot-frame" id="slotFrame">
     <div class="slot"></div>
@@ -184,8 +226,7 @@
 </div>
 
 <div class="playlist" id="playlist">
-  <h2>Our Playlist 💖</h2>
-
+  <h2>Our Playlist 💗</h2>
   <div class="song" onclick="playSong(0)">Daddy’s Home — Usher</div>
   <div class="song" onclick="playSong(1)">Say It — Tory Lanez</div>
   <div class="song" onclick="playSong(2)">Call Me Maybe — Carly Rae Jepsen</div>
@@ -197,60 +238,70 @@
   <div class="song" onclick="playSong(8)">Super Bass — Nicki Minaj</div>
   <div class="song" onclick="playSong(9)">Can’t Remember to Forget You — Shakira</div>
   <div class="song" onclick="playSong(10)">Dagabaaz Re — Rahat Fateh Ali Khan</div>
-
   <button class="shuffle" onclick="shufflePlay()">🔀 Shuffle</button>
 </div>
 
-<div class="record">💖</div>
+<div class="record-player" id="record">
+  <div class="vinyl">
+    <div class="label">💗</div>
+  </div>
+  <div class="needle"></div>
+</div>
 
 <audio id="player"></audio>
 
 <script>
-  const coin = document.getElementById("coin");
-  const slotFrame = document.getElementById("slotFrame");
-  const playlist = document.getElementById("playlist");
-  const player = document.getElementById("player");
+const coin = document.getElementById("coin");
+const slot = document.getElementById("slotFrame");
+const playlist = document.getElementById("playlist");
+const player = document.getElementById("player");
+const jukebox = document.getElementById("jukebox");
+const record = document.getElementById("record");
 
-  const songs = [
-    "daddyshome.mp3","sayit.mp3","callmemaybe.mp3",
-    "iwantitthatway.mp3","onething.mp3","perfect.mp3","miami.mp3",
-    "jolene.mp3","superbass.mp3","cantremembertoforgetyou.mp3","dagabaazre.mp3"
-  ];
+const songs = [
+"daddyshome.mp3","sayit.mp3","callmemaybe.mp3",
+"iwantitthatway.mp3","onething.mp3","perfect.mp3","miami.mp3",
+"jolene.mp3","superbass.mp3","cantremembertoforgetyou.mp3","dagabaazre.mp3"
+];
 
-  let dragging = false;
+let dragging = false;
 
-  coin.addEventListener("mousedown", () => dragging = true);
-  document.addEventListener("mouseup", () => dragging = false);
+coin.addEventListener("mousedown", () => dragging = true);
+document.addEventListener("mouseup", () => dragging = false);
 
-  document.addEventListener("mousemove", e => {
-    if (!dragging) return;
+document.addEventListener("mousemove", e => {
+  if (!dragging) return;
 
-    coin.style.left = e.pageX - 30 + "px";
-    coin.style.top = e.pageY - 30 + "px";
+  coin.style.left = e.clientX - 26 + "px";
+  coin.style.top = e.clientY - 26 + "px";
 
-    const c = coin.getBoundingClientRect();
-    const s = slotFrame.getBoundingClientRect();
+  const c = coin.getBoundingClientRect();
+  const s = slot.getBoundingClientRect();
 
-    /* VERY FORGIVING SNAP ZONE */
-    const closeEnough =
-      Math.abs(c.left - s.left) < 80 &&
-      Math.abs(c.top - s.top) < 80;
+  if (Math.abs(c.left - s.left) < 140 && Math.abs(c.top - s.top) < 140) {
+    coin.style.transition = "all 0.3s ease";
+    coin.style.left = s.left + 40 + "px";
+    coin.style.top = s.top + 50 + "px";
 
-    if (closeEnough) {
+    setTimeout(() => {
       playlist.classList.add("open");
+      jukebox.classList.add("glow");
       coin.style.display = "none";
-      dragging = false;
-    }
-  });
+    }, 300);
 
-  function playSong(i) {
-    player.src = songs[i];
-    player.play();
+    dragging = false;
   }
+});
 
-  function shufflePlay() {
-    playSong(Math.floor(Math.random() * songs.length));
-  }
+function playSong(i) {
+  player.src = songs[i];
+  player.play();
+  record.classList.add("playing");
+}
+
+function shufflePlay() {
+  playSong(Math.floor(Math.random() * songs.length));
+}
 </script>
 
 </body>
