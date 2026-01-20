@@ -12,7 +12,7 @@ body {
   overflow: hidden;
 }
 
-/* JUKEBOX BODY */
+/* JUKEBOX */
 .jukebox {
   width: 320px;
   height: 460px;
@@ -21,39 +21,26 @@ body {
   margin: 40px auto;
   position: relative;
   box-shadow: 0 25px 50px rgba(0,0,0,0.35);
-  transition: box-shadow 0.6s ease;
+  transition: opacity 0.6s ease;
 }
+.jukebox.hide { opacity: 0; pointer-events: none; }
 
-.jukebox.glow {
-  box-shadow:
-    0 0 35px rgba(255,120,190,0.9),
-    0 25px 50px rgba(0,0,0,0.35);
-}
-
-/* GLASS WINDOW */
+/* ARCH */
 .arch {
   width: 220px;
   height: 220px;
   margin: 40px auto 0;
   background: rgba(255,255,255,0.28);
   border-radius: 120px 120px 20px 20px;
-  box-shadow: inset 0 0 25px rgba(255,255,255,0.7);
-  position: relative;
 }
-
 .arch-title {
-  position: absolute;
-  bottom: 28px;
-  width: 100%;
   text-align: center;
-  font-size: 16px;
-  font-weight: bold;
+  margin-top: 170px;
   color: white;
-  letter-spacing: 0.8px;
-  text-shadow: 0 0 10px rgba(255,255,255,0.9);
+  font-weight: bold;
 }
 
-/* COIN SLOT */
+/* SLOT */
 .slot-frame {
   position: absolute;
   bottom: 55px;
@@ -63,37 +50,22 @@ body {
   height: 130px;
   background: linear-gradient(145deg, #ffb3d9, #ff6fb1);
   border-radius: 18px;
-  box-shadow:
-    inset 0 0 8px rgba(255,255,255,0.9),
-    inset 0 -6px 10px rgba(0,0,0,0.2),
-    0 8px 18px rgba(0,0,0,0.35);
 }
-
 .slot {
   position: absolute;
   left: 18px;
   top: 20px;
   width: 22px;
   height: 90px;
-  background: linear-gradient(#000, #222);
+  background: #111;
   border-radius: 6px;
 }
-
 .slot-text {
   position: absolute;
   right: 12px;
-  top: 28px;
+  top: 30px;
+  color: white;
   text-align: center;
-  font-size: 13px;
-  font-weight: bold;
-  color: #fff;
-  text-shadow: 0 0 6px rgba(255,255,255,0.8);
-}
-
-.slot-text span {
-  display: block;
-  font-size: 34px;
-  margin-bottom: 5px;
 }
 
 /* COIN */
@@ -103,11 +75,8 @@ body {
   left: 20px;
   width: 52px;
   height: 52px;
-  background: radial-gradient(circle at top, #fff2a8, #d4a100);
+  background: radial-gradient(circle, #fff2a8, #d4a100);
   border-radius: 50%;
-  box-shadow:
-    inset 0 0 8px rgba(255,255,255,0.9),
-    0 6px 12px rgba(0,0,0,0.4);
   cursor: grab;
 }
 
@@ -123,86 +92,60 @@ body {
   padding: 20px;
   transition: right 0.6s ease;
 }
-
 .playlist.open { right: 0; }
-
-.playlist h2 { color: #1db954; }
-
-.song {
-  padding: 10px;
-  border-bottom: 1px solid #333;
-  cursor: pointer;
-}
+.song { padding: 10px; cursor: pointer; }
 .song:hover { background: #282828; }
 
-.shuffle {
-  margin-top: 15px;
-  padding: 10px;
-  background: #1db954;
-  border: none;
-  border-radius: 20px;
-  width: 100%;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-/* RECORD PLAYER */
-.record-player {
+/* NOW PLAYING */
+.now-playing {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 110px;
-  height: 110px;
-}
-
-.vinyl {
-  width: 100%;
+  left: 0;
+  top: 0;
+  width: calc(100% - 360px);
   height: 100%;
-  background: radial-gradient(circle, #111 55%, #000 60%);
-  border-radius: 50%;
-  animation: spin 3s linear infinite;
-  position: relative;
-}
-
-.vinyl::before {
-  content: "";
-  position: absolute;
-  inset: 8px;
-  border-radius: 50%;
-  border: 2px solid rgba(255,255,255,0.1);
-}
-
-.label {
-  position: absolute;
-  inset: 32%;
-  background: pink;
-  border-radius: 50%;
-  display: flex;
+  display: none;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
 }
 
-/* NEEDLE ARM */
-.needle {
-  position: absolute;
-  width: 80px;
-  height: 6px;
-  background: #444;
-  top: -10px;
-  right: -40px;
-  transform-origin: left center;
-  transform: rotate(-25deg);
-  transition: transform 0.6s ease;
-  border-radius: 4px;
+.video-box {
+  width: 420px;
+  height: 420px;
+  border-radius: 30px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+.video-box video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.playing .needle {
-  transform: rotate(0deg);
+.controls {
+  width: 420px;
+  margin-top: 20px;
+  color: #111;
+  text-align: center;
+}
+.song-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
 }
 
-@keyframes spin {
-  to { transform: rotate(360deg); }
+.progress {
+  width: 100%;
+}
+button {
+  margin-top: 10px;
+  padding: 8px 20px;
+  border: none;
+  border-radius: 20px;
+  background: #ff5fa2;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
 }
 </style>
 </head>
@@ -213,15 +156,10 @@ body {
   <div class="arch">
     <div class="arch-title">Songs That Remind Me of You 💕</div>
   </div>
-
   <div class="slot-frame" id="slotFrame">
     <div class="slot"></div>
-    <div class="slot-text">
-      <span>25¢</span>
-      INSERT<br>COIN
-    </div>
+    <div class="slot-text"><span>25¢</span>INSERT</div>
   </div>
-
   <div class="coin" id="coin"></div>
 </div>
 
@@ -230,22 +168,20 @@ body {
   <div class="song" onclick="playSong(0)">Daddy’s Home — Usher</div>
   <div class="song" onclick="playSong(1)">Say It — Tory Lanez</div>
   <div class="song" onclick="playSong(2)">Call Me Maybe — Carly Rae Jepsen</div>
-  <div class="song" onclick="playSong(3)">I Want It That Way — Backstreet Boys</div>
-  <div class="song" onclick="playSong(4)">One Thing — One Direction</div>
-  <div class="song" onclick="playSong(5)">Perfect — One Direction</div>
-  <div class="song" onclick="playSong(6)">Miami — Morgan Wallen</div>
-  <div class="song" onclick="playSong(7)">Jolene — Dolly Parton</div>
-  <div class="song" onclick="playSong(8)">Super Bass — Nicki Minaj</div>
-  <div class="song" onclick="playSong(9)">Can’t Remember to Forget You — Shakira</div>
-  <div class="song" onclick="playSong(10)">Dagabaaz Re — Rahat Fateh Ali Khan</div>
-  <button class="shuffle" onclick="shufflePlay()">🔀 Shuffle</button>
+  <div class="song" onclick="playSong(3)">I Want It That Way — BSB</div>
+  <div class="song" onclick="playSong(4)">Perfect — One Direction</div>
 </div>
 
-<div class="record-player" id="record">
-  <div class="vinyl">
-    <div class="label">💗</div>
+<div class="now-playing" id="nowPlaying">
+  <div class="video-box">
+    <video id="video" autoplay muted loop></video>
   </div>
-  <div class="needle"></div>
+
+  <div class="controls">
+    <div class="song-title" id="songTitle">💗</div>
+    <input type="range" id="progress" class="progress" value="0">
+    <button onclick="togglePlay()">Play / Pause</button>
+  </div>
 </div>
 
 <audio id="player"></audio>
@@ -254,54 +190,54 @@ body {
 const coin = document.getElementById("coin");
 const slot = document.getElementById("slotFrame");
 const playlist = document.getElementById("playlist");
-const player = document.getElementById("player");
 const jukebox = document.getElementById("jukebox");
-const record = document.getElementById("record");
+const player = document.getElementById("player");
+const nowPlaying = document.getElementById("nowPlaying");
+const video = document.getElementById("video");
+const title = document.getElementById("songTitle");
+const progress = document.getElementById("progress");
 
 const songs = [
-"daddyshome.mp3","sayit.mp3","callmemaybe.mp3",
-"iwantitthatway.mp3","onething.mp3","perfect.mp3","miami.mp3",
-"jolene.mp3","superbass.mp3","cantremembertoforgetyou.mp3","dagabaazre.mp3"
+  { file:"daddyshome.mp3", name:"Daddy’s Home — Usher" },
+  { file:"sayit.mp3", name:"Say It — Tory Lanez" },
+  { file:"callmemaybe.mp3", name:"Call Me Maybe — Carly Rae Jepsen" },
+  { file:"iwantitthatway.mp3", name:"I Want It That Way — BSB" },
+  { file:"perfect.mp3", name:"Perfect — One Direction" }
 ];
 
-let dragging = false;
+const videos = ["vid1.MP4","vid2.mov","vid3.MP4","vid4.mov","vid5.mov","vid6.mov"];
+let vidIndex = 0;
 
-coin.addEventListener("mousedown", () => dragging = true);
-document.addEventListener("mouseup", () => dragging = false);
+function cycleVideo() {
+  video.src = videos[vidIndex % videos.length];
+  vidIndex++;
+}
+setInterval(cycleVideo, 6000);
+cycleVideo();
 
-document.addEventListener("mousemove", e => {
-  if (!dragging) return;
-
-  coin.style.left = e.clientX - 26 + "px";
-  coin.style.top = e.clientY - 26 + "px";
-
-  const c = coin.getBoundingClientRect();
-  const s = slot.getBoundingClientRect();
-
-  if (Math.abs(c.left - s.left) < 140 && Math.abs(c.top - s.top) < 140) {
-    coin.style.transition = "all 0.3s ease";
-    coin.style.left = s.left + 40 + "px";
-    coin.style.top = s.top + 50 + "px";
-
-    setTimeout(() => {
-      playlist.classList.add("open");
-      jukebox.classList.add("glow");
-      coin.style.display = "none";
-    }, 300);
-
-    dragging = false;
-  }
-});
+coin.onmousedown = () => {
+  playlist.classList.add("open");
+  jukebox.classList.add("hide");
+  nowPlaying.style.display = "flex";
+};
 
 function playSong(i) {
-  player.src = songs[i];
+  player.src = songs[i].file;
+  title.textContent = songs[i].name;
   player.play();
-  record.classList.add("playing");
 }
 
-function shufflePlay() {
-  playSong(Math.floor(Math.random() * songs.length));
+function togglePlay() {
+  player.paused ? player.play() : player.pause();
 }
+
+player.ontimeupdate = () => {
+  progress.value = (player.currentTime / player.duration) * 100 || 0;
+};
+
+progress.oninput = () => {
+  player.currentTime = (progress.value / 100) * player.duration;
+};
 </script>
 
 </body>
