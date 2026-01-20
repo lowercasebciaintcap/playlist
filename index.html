@@ -23,21 +23,31 @@ body {
   box-shadow: 0 25px 50px rgba(0,0,0,0.35);
   transition: opacity 0.6s ease;
 }
-.jukebox.hide { opacity: 0; pointer-events: none; }
+.jukebox.hide {
+  opacity: 0;
+  pointer-events: none;
+}
 
-/* ARCH */
+/* GLASS OVAL */
 .arch {
   width: 220px;
   height: 220px;
   margin: 40px auto 0;
   background: rgba(255,255,255,0.28);
-  border-radius: 120px 120px 20px 20px;
+  border-radius: 120px 120px 25px 25px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 22px;
 }
+
 .arch-title {
   text-align: center;
-  margin-top: 170px;
-  color: white;
+  font-size: 15px;
   font-weight: bold;
+  color: white;
+  line-height: 1.2;
+  max-width: 180px;
 }
 
 /* SLOT */
@@ -51,21 +61,30 @@ body {
   background: linear-gradient(145deg, #ffb3d9, #ff6fb1);
   border-radius: 18px;
 }
+
 .slot {
   position: absolute;
   left: 18px;
   top: 20px;
   width: 22px;
   height: 90px;
-  background: #111;
+  background: linear-gradient(#000, #222);
   border-radius: 6px;
 }
+
 .slot-text {
   position: absolute;
-  right: 12px;
+  right: 16px;
   top: 30px;
-  color: white;
   text-align: center;
+  font-size: 13px;
+  font-weight: bold;
+  color: #fff;
+}
+.slot-text span {
+  display: block;
+  font-size: 30px;
+  line-height: 1;
 }
 
 /* COIN */
@@ -80,7 +99,7 @@ body {
   cursor: grab;
 }
 
-/* PLAYLIST */
+/* PLAYLIST (UNCHANGED STYLE) */
 .playlist {
   position: fixed;
   top: 0;
@@ -93,10 +112,27 @@ body {
   transition: right 0.6s ease;
 }
 .playlist.open { right: 0; }
-.song { padding: 10px; cursor: pointer; }
+.playlist h2 { color: #1db954; }
+
+.song {
+  padding: 10px;
+  border-bottom: 1px solid #333;
+  cursor: pointer;
+}
 .song:hover { background: #282828; }
 
-/* NOW PLAYING */
+.shuffle {
+  margin-top: 15px;
+  padding: 10px;
+  background: #1db954;
+  border: none;
+  border-radius: 20px;
+  width: 100%;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* NOW PLAYING AREA */
 .now-playing {
   position: fixed;
   left: 0;
@@ -109,10 +145,11 @@ body {
   justify-content: center;
 }
 
+/* RECTANGULAR VIDEO */
 .video-box {
-  width: 420px;
-  height: 420px;
-  border-radius: 30px;
+  width: 520px;
+  height: 300px;
+  border-radius: 22px;
   overflow: hidden;
   box-shadow: 0 20px 40px rgba(0,0,0,0.4);
 }
@@ -122,18 +159,17 @@ body {
   object-fit: cover;
 }
 
+/* CONTROLS */
 .controls {
-  width: 420px;
+  width: 520px;
   margin-top: 20px;
-  color: #111;
   text-align: center;
 }
 .song-title {
   font-size: 20px;
   font-weight: bold;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
-
 .progress {
   width: 100%;
 }
@@ -156,10 +192,15 @@ button {
   <div class="arch">
     <div class="arch-title">Songs That Remind Me of You 💕</div>
   </div>
+
   <div class="slot-frame" id="slotFrame">
     <div class="slot"></div>
-    <div class="slot-text"><span>25¢</span>INSERT</div>
+    <div class="slot-text">
+      <span>25¢</span>
+      INSERT<br>COIN
+    </div>
   </div>
+
   <div class="coin" id="coin"></div>
 </div>
 
@@ -168,15 +209,21 @@ button {
   <div class="song" onclick="playSong(0)">Daddy’s Home — Usher</div>
   <div class="song" onclick="playSong(1)">Say It — Tory Lanez</div>
   <div class="song" onclick="playSong(2)">Call Me Maybe — Carly Rae Jepsen</div>
-  <div class="song" onclick="playSong(3)">I Want It That Way — BSB</div>
-  <div class="song" onclick="playSong(4)">Perfect — One Direction</div>
+  <div class="song" onclick="playSong(3)">I Want It That Way — Backstreet Boys</div>
+  <div class="song" onclick="playSong(4)">One Thing — One Direction</div>
+  <div class="song" onclick="playSong(5)">Perfect — One Direction</div>
+  <div class="song" onclick="playSong(6)">Miami — Morgan Wallen</div>
+  <div class="song" onclick="playSong(7)">Jolene — Dolly Parton</div>
+  <div class="song" onclick="playSong(8)">Super Bass — Nicki Minaj</div>
+  <div class="song" onclick="playSong(9)">Can’t Remember to Forget You — Shakira</div>
+  <div class="song" onclick="playSong(10)">Dagabaaz Re — Rahat Fateh Ali Khan</div>
+  <button class="shuffle" onclick="shufflePlay()">🔀 Shuffle</button>
 </div>
 
 <div class="now-playing" id="nowPlaying">
   <div class="video-box">
     <video id="video" autoplay muted loop></video>
   </div>
-
   <div class="controls">
     <div class="song-title" id="songTitle">💗</div>
     <input type="range" id="progress" class="progress" value="0">
@@ -188,32 +235,35 @@ button {
 
 <script>
 const coin = document.getElementById("coin");
-const slot = document.getElementById("slotFrame");
 const playlist = document.getElementById("playlist");
 const jukebox = document.getElementById("jukebox");
-const player = document.getElementById("player");
 const nowPlaying = document.getElementById("nowPlaying");
+const player = document.getElementById("player");
 const video = document.getElementById("video");
 const title = document.getElementById("songTitle");
 const progress = document.getElementById("progress");
 
 const songs = [
-  { file:"daddyshome.mp3", name:"Daddy’s Home — Usher" },
-  { file:"sayit.mp3", name:"Say It — Tory Lanez" },
-  { file:"callmemaybe.mp3", name:"Call Me Maybe — Carly Rae Jepsen" },
-  { file:"iwantitthatway.mp3", name:"I Want It That Way — BSB" },
-  { file:"perfect.mp3", name:"Perfect — One Direction" }
+  {file:"daddyshome.mp3", name:"Daddy’s Home — Usher"},
+  {file:"sayit.mp3", name:"Say It — Tory Lanez"},
+  {file:"callmemaybe.mp3", name:"Call Me Maybe — Carly Rae Jepsen"},
+  {file:"iwantitthatway.mp3", name:"I Want It That Way — Backstreet Boys"},
+  {file:"onething.mp3", name:"One Thing — One Direction"},
+  {file:"perfect.mp3", name:"Perfect — One Direction"},
+  {file:"miami.mp3", name:"Miami — Morgan Wallen"},
+  {file:"jolene.mp3", name:"Jolene — Dolly Parton"},
+  {file:"superbass.mp3", name:"Super Bass — Nicki Minaj"},
+  {file:"cantremembertoforgetyou.mp3", name:"Can’t Remember to Forget You — Shakira"},
+  {file:"dagabaazre.mp3", name:"Dagabaaz Re — Rahat Fateh Ali Khan"}
 ];
 
 const videos = ["vid1.MP4","vid2.mov","vid3.MP4","vid4.mov","vid5.mov","vid6.mov"];
-let vidIndex = 0;
+let v = 0;
 
-function cycleVideo() {
-  video.src = videos[vidIndex % videos.length];
-  vidIndex++;
-}
-setInterval(cycleVideo, 6000);
-cycleVideo();
+setInterval(() => {
+  video.src = videos[v % videos.length];
+  v++;
+}, 6000);
 
 coin.onmousedown = () => {
   playlist.classList.add("open");
@@ -227,6 +277,10 @@ function playSong(i) {
   player.play();
 }
 
+function shufflePlay() {
+  playSong(Math.floor(Math.random() * songs.length));
+}
+
 function togglePlay() {
   player.paused ? player.play() : player.pause();
 }
@@ -234,7 +288,6 @@ function togglePlay() {
 player.ontimeupdate = () => {
   progress.value = (player.currentTime / player.duration) * 100 || 0;
 };
-
 progress.oninput = () => {
   player.currentTime = (progress.value / 100) * player.duration;
 };
