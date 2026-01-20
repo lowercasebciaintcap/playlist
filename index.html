@@ -260,10 +260,24 @@ const songs = [
 const videos = ["vid1.MP4","vid2.mov","vid3.MP4","vid4.mov","vid5.mov","vid6.mov"];
 let v = 0;
 
-setInterval(() => {
-  video.src = videos[v % videos.length];
-  v++;
-}, 6000);
+video.removeAttribute("loop");
+
+function nextClip() {
+  let next;
+  do {
+    next = Math.floor(Math.random() * videos.length);
+  } while (next === v); // prevents immediate repeats
+
+  v = next;
+  video.src = videos[v];
+  video.play();
+}
+
+/* start first clip */
+nextClip();
+
+/* move to next clip when one ends */
+video.addEventListener("ended", nextClip);
 
 coin.onmousedown = () => {
   playlist.classList.add("open");
