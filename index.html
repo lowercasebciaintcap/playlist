@@ -262,22 +262,34 @@ let v = 0;
 
 video.removeAttribute("loop");
 
+let switching = false;
+
 function nextClip() {
   let next;
   do {
     next = Math.floor(Math.random() * videos.length);
-  } while (next === v); // prevents immediate repeats
+  } while (next === v);
 
   v = next;
   video.src = videos[v];
   video.play();
+  switching = false;
 }
 
 /* start first clip */
 nextClip();
 
-/* move to next clip when one ends */
-video.addEventListener("ended", nextClip);
+/* switch slightly BEFORE the video ends */
+video.addEventListener("timeupdate", () => {
+  if (
+    video.duration &&
+    video.currentTime >= video.duration - 0.15 &&
+    !switching
+  ) {
+    switching = true;
+    nextClip();
+  }
+});
 
 coin.onmousedown = () => {
   playlist.classList.add("open");
